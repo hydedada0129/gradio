@@ -1,0 +1,37 @@
+import gradio as gr
+import speech_recognition as sr
+from moviepy.editor import VideoFileClip
+
+# Function to recognize speech from an MP4 video
+def recognize_speech(video_file):
+    r = sr.Recognizer()
+
+    # Extract audio from the video using MoviePy
+    video = VideoFileClip(video_file.name)
+    audio_clip = video.audio
+    audio_clip.write_audiofile("temp.wav", codec="pcm_s16le")
+
+    try:
+        with sr.AudioFile("temp.wav") as source:
+            audio_data = r.record(source)
+            try:
+                recognized_text = r.recognize_google(audio_data, language="zh-TW")
+                return recognized_text
+            except sr.UnknownValueError:
+                return "Google Speech Recognition could not understand audio"
+            except sr.RequestError as e:
+                return f"Could not request results from Google Speech Recognition; {e}"
+    except sr.UnsupportedAudioFileError:
+        return "Unsupported audio file format. Please convert to WAV, AIFF, or FLAC."
+
+# Create the Gradio interface
+interface = gr.Interface(
+    fn=recognize_speech,
+    inputs=gr.File(label="Upload Video"),  # Input: File upload for video
+    outputs="text",  # Output: Plain text
+    title="Mandarin Speech Recognition from Video",
+    description="Upload an MP4 video in Mandarin and get the recognized text.",
+)
+
+# Launch the interface
+interface.launch()
