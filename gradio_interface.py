@@ -1,12 +1,11 @@
-      
 import os
 import speech_recognition as sr
 from pydub import AudioSegment
 import time
 from datetime import timedelta
-      
 from pydub import AudioSegment
 from pydub.utils import which
+import gradio as gr
 
 ffmpeg_path = which("ffmpeg")  # Get the path to ffmpeg
 AudioSegment.converter = ffmpeg_path  # Set the path
@@ -56,8 +55,31 @@ def recognize_audio_in_chunks(wav_file, output_txt, chunk_length_ms=5000):
             # 刪除臨時檔案
             os.remove(chunk_file)
 
-            
+def process_audio(audio_file):
+    """Processes the uploaded audio file."""
+    # Set output file name based on the input file
+    base_filename = os.path.splitext(os.path.basename(audio_file.name))[0]
+    output_txt = f"{base_filename}_transcription_Google2.txt"
 
+    # Perform audio recognition
+    recognize_audio_in_chunks(audio_file.name, output_txt)
+
+    # Read the output transcription
+    with open(output_txt, "r", encoding="utf-8") as f:
+        transcription = f.read()
+
+    # Return the transcription
+    return transcription
+
+# Create Gradio interface
+interface = gr.Interface(
+    fn=process_audio,
+    inputs=gr.Audio(label="Upload Audio"),
+    outputs=gr.Textbox(label="Extracted Text"),
+    title="Audio Transcription"
+)
+
+# Launch Gradio
 if __name__ == "__main__":
     #input_mp4 = "short_video_1.mp4"  # 你的 MP4 檔案名稱
     input_wav = "short_video_1_output_google2.wav"  # 你的 WAV 檔案名稱
@@ -79,3 +101,4 @@ if __name__ == "__main__":
     total_end_time = time.time()
     total_time = total_end_time - total_start_time
     print(f"整個程式總共花費時間: {format_time(total_time)}")
+    interface.launch()
