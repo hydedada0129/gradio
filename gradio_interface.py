@@ -1,3 +1,4 @@
+#%%
 import os
 import speech_recognition as sr
 from pydub import AudioSegment
@@ -6,6 +7,7 @@ from datetime import timedelta
 from pydub import AudioSegment
 from pydub.utils import which
 from deep_translator import GoogleTranslator  # Import the deep_translator library
+from gtts import gTTS
 
 ffmpeg_path = which("ffmpeg")  # Get the path to ffmpeg
 AudioSegment.converter = ffmpeg_path  # Set the path
@@ -105,6 +107,122 @@ def run_audio_recognition_and_translation():
     total_time = total_end_time - total_start_time
     print(f"Total program time: {format_time(total_time)}")
 
-# Launch the process
+    # Below is the text you want to add
+    # (It will be appended to the translation)
+    additional_text = "This is some extra text to be added to the translation!"
+    translated_text = translated_text + "\n" + additional_text
+
+    # Save the updated translation
+    with open(output_en_txt, "a", encoding="utf-8") as f:
+        f.write(additional_text)
+    print(f"Updated translated text saved to: {output_en_txt}")
+    
+    #input for extracting story text
+    story_text = extract_story_text(output_en_txt)
+
+    output_file_path = "extracted_story_en.txt"  # Replace with your desired output file name
+
+    #save to a new txt file
+    save_story_text(story_text, output_file_path)
+    print(f"Story text saved to: {output_file_path}")
+
+    read_text_file(output_file_path)
+
+def extract_story_text(file_path):
+    """Extracts the story text from the provided file, excluding timestamps and other metadata."""
+    story_text = ""
+    with open(file_path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+        for line in lines:
+            # Check if the line starts with "Time period"
+            if line.startswith("Time period"):
+                # Extract the story text after the colon
+                # story_text += line.split(": ", 1)[1].strip() + " "
+                story_text += line.split(": ", 1)[1].strip() + "\n"
+    return story_text.strip()
+
+def save_story_text(story_text, output_file_path):
+    """Saves the extracted story text to a new text file."""
+    with open(output_file_path, 'w', encoding='utf-8') as f:
+        f.write(story_text)
+
+# Read and speak the translated text
+def read_text_file(file_path):
+    try:
+        # Open and read the file
+        with open(file_path, 'r', encoding='utf-8') as file:
+            text = file.read()
+
+        # Use gTTS to convert text to speech
+        tts = gTTS(text=text, lang='en')  # Assuming English language
+        tts.save("output.mp3")  # Save the audio to a file
+
+        print("Audio file saved as output.mp3")
+
+        # # Use speech synthesis to read the text
+        # engine.say(text)
+        # engine.runAndWait()
+
+    except FileNotFoundError:
+        print("File not found, please check the file path.")
+    except Exception as e:
+        print(f"Error occurred: {e}")
+
+    # Read and speak the translated text
+    # read_text_file(output_en_txt)
+
 if __name__ == "__main__":
-    run_audio_recognition_and_translation()
+    
+
+
+# def read_text_file(file_path):
+#     try:
+#         # Open and read the file
+#         with open(file_path, 'r', encoding='utf-8') as file:
+#             text = file.read()
+
+#         # Use gTTS to convert text to speech
+#         tts = gTTS(text=text, lang='en')  # Assuming English language
+#         tts.save("output.mp3")  # Save the audio to a file
+
+#         print("Audio file saved as output.mp3")
+
+#         # # Use speech synthesis to read the text
+#         # engine.say(text)
+#         # engine.runAndWait()
+
+#     except FileNotFoundError:
+#         print("File not found, please check the file path.")
+#     except Exception as e:
+#         print(f"Error occurred: {e}")
+
+# Launch the process
+# if __name__ == "__main__":
+#     # run_audio_recognition_and_translation()
+#     read_text_file('/home/oem/anaconda3/envs/speech_to_speech/codes/backend/gradio/test_short_wav_translation_en.txt')
+
+# def extract_story_text(file_path):
+#     """Extracts the story text from the provided file, excluding timestamps and other metadata."""
+#     story_text = ""
+#     with open(file_path, 'r', encoding='utf-8') as f:
+#         lines = f.readlines()
+#         for line in lines:
+#             # Check if the line starts with "Time period"
+#             if line.startswith("Time period"):
+#                 # Extract the story text after the colon
+#                 # story_text += line.split(": ", 1)[1].strip() + " "
+#                 story_text += line.split(": ", 1)[1].strip() + "\n"
+#     return story_text.strip()
+
+# def save_story_text(story_text, output_file_path):
+#     """Saves the extracted story text to a new text file."""
+#     with open(output_file_path, 'w', encoding='utf-8') as f:
+#         f.write(story_text)
+
+# Example usage:
+# file_path = "test_short_wav_translation_en.txt"  # Replace with your file path
+# story_text = extract_story_text(file_path)
+# output_file_path = "extracted_story.txt"  # Replace with your desired output file name
+
+# save_story_text(story_text, output_file_path)
+# print(f"Story text saved to: {output_file_path}")
