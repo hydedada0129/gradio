@@ -1,9 +1,9 @@
 Total length of audio file: 0:04:35
 Approximately 5.0 seconds per segment
 
-Time period 0:00:00 - 0:00:05: 29-year-old Ms. Meng is an office worker. Young people lament the cost of wages.
+Time period 0:00:00 - 0:00:05: 29-year-old Ms. Meng is an office worker and laments the cost of salary after being out of society for 7 years.
 Time period 0:00:05 - 0:00:10: Living in Taipei with limited time and saving money is not easy these days because
-Time period 0:00:10 - 0:00:15: In fact, those who feel that prices are rising are quite aware, and everyone knows that those who do not rise now have to pay wages.
+Time period 0:00:10 - 0:00:15: In fact, those who feel that prices are rising are quite aware, and everyone knows that those who do not have rising prices now have wages.
 Time period 0:00:15 - 0:00:20: When it comes to saving money, what you can save every month is actually very limited in Taipei.
 Time period 0:00:20 - 0:00:25: He is from Taipei himself and can save money on rent by living at home, but it will be deducted
 Time period 0:00:25 - 0:00:30: There is also not much money that can be saved for living expenses. In fact, it depends on each person’s conditions.
@@ -55,4 +55,4 @@ Time period 0:04:10 - 0:04:15: After fixing how much money to spend, I set a bud
 Time period 0:04:15 - 0:04:20: Knights, like us, can also assist customers in planning and depositing some financial products.
 Time period 0:04:20 - 0:04:25: The goal must be clear enough. If you really can't achieve much, you may have to find a way.
 Time period 0:04:25 - 0:04:30: Kaiyuan TVBS News returned to Taipei very late for interviews and reports
-Time period 0:04:30 - 0:04:35: If you want to see the most complete news content, remember to download the TVBS News Network App
+Time period 0:04:30 - 0:04:35: If you want to see the most complete news content, remember to download the TVBS News Network AppThis is some extra text to be added to the translation!
